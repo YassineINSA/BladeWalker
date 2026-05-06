@@ -654,6 +654,16 @@ body.no-scroll {
     transition: background 0.3s, color 0.3s;
 }
 
+.wiki {
+    font-size: 0.9rem;
+    color: #9b9b9b;
+    margin-top: 5px;
+}
+
+.wiki:hover {
+    color: #575757;
+}
+
 .toggle-container input[type="radio"]:checked + .toggle-label {
     background: #fc3535;
     color: #0b0c10;

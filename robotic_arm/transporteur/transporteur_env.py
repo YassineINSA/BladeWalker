@@ -6,12 +6,15 @@ import math
 
 class RoboticArmTransporteurEnv(gym.Env):
     
-    def __init__(self, segment_lengths=[1.0, 1.0]):
+    def __init__(self, segment_lengths=[1.0, 1.0], energy_coef=0.05, jitter_coef=0.1,render_mode="none"):
         super(RoboticArmTransporteurEnv, self).__init__()
 
         self.segment_lengths = np.array(segment_lengths) # Longueurs des segments du bras
         self.number_links = len(self.segment_lengths) # Nombre de segments (= nombre d'articulations)
         
+        self.energy_coef = energy_coef
+        self.jitter_coef = jitter_coef
+
         max_action = 0.3 # Limite maximale de changement d'angle par step
 
         # L'action_space c'est comme la manette de contrôle qu'on donne à l'IA
@@ -70,7 +73,7 @@ class RoboticArmTransporteurEnv(gym.Env):
         self.previous_distance_to_object = 0.0
         self.previous_distance_to_drop = 0.0
 
-        self.render_mode = "human" # Mode de rendu (affichage à l'écran)
+        self.render_mode = render_mode # Mode de rendu (affichage à l'écran)
         # Le mode par défaut de Gymnasium est "none", surtout utilisé pour l'entraînement sans affichage.
         # Ici on veut voir le bras bouger, donc on utilise "human" pour afficher une fenêtre et brider le nombre de frames par seconde.
 
@@ -234,8 +237,8 @@ class RoboticArmTransporteurEnv(gym.Env):
         self.previous_distance_to_drop = current_distance_to_drop
 
         # ... (Les pénalités d'énergie et de jitter restent en dessous comme avant)
-        energy_penalty = 0.05 * np.sum(np.square(motors_action))
-        jitter_penalty = 0.1 * np.sum(np.square(action[:-1] - self.previous_raw_action[:-1]))
+        energy_penalty = self.energy_coef * np.sum(np.square(motors_action))
+        jitter_penalty = self.jitter_coef * np.sum(np.square(action[:-1] - self.previous_raw_action[:-1]))
         
         reward = reward - energy_penalty - jitter_penalty
         
@@ -250,6 +253,9 @@ class RoboticArmTransporteurEnv(gym.Env):
         if self.has_object and current_distance_to_drop < 0.1:
             reward += 100.0 # On augmente la prime de victoire !
             terminated = True
+
+        if self.current_step >= 100:
+            truncated = True
             
         # Calcul des vecteurs relatifs pour la nouvelle observation
         vector_to_object = self.object_pos - end_pos
@@ -498,6 +504,11 @@ class RoboticArmTransporteurEnv(gym.Env):
 
         pygame.display.flip()
         self.clock.tick(30)
+        
+        if self.render_mode == "rgb_array":
+            # Pygame stocke les pixels en (X, Y, RGB), Gymnasium attend (Y, X, RGB)
+            # On utilise transpose pour pivoter la matrice correctement
+            return np.transpose(pygame.surfarray.array3d(self.window), axes=(1, 0, 2))
 
     def close(self):
         if self.window is not None:

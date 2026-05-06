@@ -15,9 +15,13 @@
     <canvas id="canvas-bg"></canvas>
 
     <header id="main-nav" class="top-header scrolled">
-        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
-        <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">🌙</button>
-        <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">A.R.M.<span class="project-title">Projet SMART 2026</span></a></div>
+        <div class="nav-corner">
+            <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">
+                <img src="img/couleur.png" class="info-icon" id="theme-icon">
+            </button>
+            <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+        </div>
     </header>
 
     <div class="dashboard-wrapper full-page">
@@ -36,10 +40,10 @@
                     <div class="video-controls">
                         <button id="play-pause-btn" class="control-btn">▶ LECTURE</button>
                         
-                        <div class="training-group">
+                        <!-- <div class="training-group">
                             <span id="train-status" class="status-msg">Configurez la tâche finale...</span>
                             <button id="train-btn" class="btn-start small-train-btn">LANCER L'ENTRAÎNEMENT (0/3)</button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -47,14 +51,13 @@
             <!-- COLONNE DROITE (Paramètres) -->
             <div class="dashboard-right">
                 <div class="settings-header">
-                    <h2>Niveau 3 : Maîtrise Parfaite</h2>
-                    <p class="level-description">Ajout d'une pince (Pick & Place) et gestion de la difficulté (Curriculum).</p>
+                    <h2>Niveau 3</h2>
+                    <p class="level-description">???</p>
                 </div>
 
                 <div class="settings-panel">
                     
-                    <!-- Toggle Tâche -->
-                    <div class="setting-group">
+                    <!-- <div class="setting-group">
                         <label>
                             Tâche de l'Agent
                             <div class="info-tooltip">
@@ -70,7 +73,6 @@
                         </div>
                     </div>
 
-                    <!-- Toggle Curriculum -->
                     <div class="setting-group">
                         <label>
                             Méthodologie (Curriculum)
@@ -85,8 +87,7 @@
                             <input type="radio" id="curr-on" name="curriculum" value="on" checked>
                             <label for="curr-on" class="toggle-label">Apprentissage Progressif</label>
                         </div>
-                    </div>
-
+                    </div> -->
                 </div>
             </div>
 

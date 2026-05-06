@@ -153,7 +153,7 @@ window.addEventListener('scroll', () => {
 
 const mapLevels = [
     { 
-        id: 0, x: 15, y: 50, // Point de départ
+        id: 0, x: 15, y: 50,
         title: "Zone de Départ", 
         desc: "L'environnement d'entraînement est prêt. R.E.X. est en attente d'instructions. Utilisez la flèche droite ou cliquez sur le niveau suivant.",
         showBtn: false 
@@ -161,20 +161,20 @@ const mapLevels = [
     { 
         id: 1, x: 40, y: 30,
         title: "Niveau 1 : Bras Articulé Basique", 
-        desc: "Observez les premiers mouvements erratiques du bras robotique. Il n'a aucune idée de ce qu'il fait, mais il explore l'espace !",
+        desc: "Observez les premiers mouvements du bras robotique !",
         showBtn: true 
     },
     { 
         id: 2, x: 65, y: 70,
-        title: "Niveau 2 : Bras articulé de transport", 
-        desc: "Nous avons introduit une friandise virtuelle. L'algorithme PPO commence à privilégier les mouvements qui rapportent, il peut désormais récuperer un objet et le déplacer.",
+        title: "Niveau 2 : Bras Articulé de Transport", 
+        desc: "Après de longues heures d'entraînement, R.E.X. a appris à transporter des objets !",
         showBtn: true 
     },
     { 
         id: 3, x: 90, y: 40,
-        title: "Niveau 3 : Maîtrise Parfaite", 
-        desc: "Des millions d'itérations plus tard. De l'erreur est née l'intelligence. R.E.X. maîtrise son objectif à la perfection.",
-        showBtn: true 
+        title: "Niveau 3", 
+        desc: "???",
+        showBtn: false
     }
 ];
 
@@ -280,6 +280,10 @@ function moveToLevel(index) {
 }
 
 
+
+
+
+
 // --- Logique du Dashboard Niveau 1 ---
 const dashboardContainer = document.querySelector('.dashboard-container');
 
@@ -298,8 +302,9 @@ if (dashboardContainer) {
 
     // Variables d'état
     let trainCount = 0;
-    const MAX_TRAINS = 3;
-    const valueMap = { "1": "Faible", "2": "Moyen", "3": "Forte" };
+    const MAX_TRAINS = 2;
+
+    const valueMap = { "1": "moyen", "2": "fort" };
 
     // --- 1. Contrôle Vidéo ---
     playPauseBtn.addEventListener('click', () => {
@@ -318,18 +323,16 @@ if (dashboardContainer) {
         updateTrainButton();
         trainStatus.innerText = "Paramètres modifiés. Prêt pour un nouvel entraînement.";
         trainStatus.style.color = "#aaa";
-        // Optionnel : remettre la vidéo de base ici
-        // video.src = "video-base.mp4"; 
+        // Optionnel : remettre une vidéo "d'attente"
+        // video.src = "videos/attente.mp4"; 
     }
 
     // --- 3. Écouteurs sur les Paramètres ---
-    energySlider.addEventListener('input', (e) => {
-        energyVal.innerText = valueMap[e.target.value];
+    energySlider.addEventListener('input', () => {
         resetTraining();
     });
 
-    shakeSlider.addEventListener('input', (e) => {
-        shakeVal.innerText = valueMap[e.target.value];
+    shakeSlider.addEventListener('input', () => {
         resetTraining();
     });
 
@@ -339,7 +342,24 @@ if (dashboardContainer) {
         });
     });
 
-    // --- 4. Logique du Bouton d'Entraînement ---
+    // --- 4. Fonction pour générer le nom de la vidéo ---
+    function getVideoFilename(step) {
+        // Récupérer l'algo sélectionné (PPO ou SAC, en minuscules)
+        const algo = document.querySelector('input[name="algo"]:checked').value.toLowerCase();
+        
+        // Récupérer les valeurs des curseurs
+        const energyVal = energySlider.value;
+        const shakeVal = shakeSlider.value;
+
+        // Traduire les chiffres (1, 2) en mots ("faible", "forte")
+        const energyStr = valueMap[energyVal];
+        const shakeStr = valueMap[shakeVal];
+
+        // Construire le chemin final (ex: videos/pointeur_ppo_energie-faible_jitter-forte_phase-1.mp4)
+        return `videos/pointeur_${algo}_energie-${energyStr}_jitter-${shakeStr}_phase-${step}.mp4`;
+    }
+
+    // --- 5. Logique du Bouton d'Entraînement ---
     function updateTrainButton() {
         trainBtn.innerText = `LANCER L'ENTRAÎNEMENT (${trainCount}/${MAX_TRAINS})`;
         if (trainCount >= MAX_TRAINS) {
@@ -351,18 +371,9 @@ if (dashboardContainer) {
     }
 
     trainBtn.addEventListener('click', () => {
-        // Liste des vidéos pré-enregistrées à charger dans l'ordre
-    // Assure-toi que ces fichiers existent bien dans ton dossier "videos"
-    const preRecordedVideos = [
-        "videos/etape1_debutant.mp4",
-        "videos/etape2_intermediaire.mp4",
-        "videos/etape3_expert.mp4"
-    ];
-
-    trainBtn.addEventListener('click', () => {
         if (trainCount < MAX_TRAINS) {
             
-            // 1. Animation de chargement (Le tour de magie)
+            // 1. Animation de chargement
             trainBtn.disabled = true;
             let dots = 0;
             trainStatus.style.color = "#fc3535";
@@ -375,29 +386,34 @@ if (dashboardContainer) {
 
             // 2. On simule un temps de calcul de 2.5 secondes
             setTimeout(() => {
-                // On arrête l'animation des petits points
                 clearInterval(loadingInterval);
 
-                // 3. On sélectionne la vidéo correspondante à l'étape actuelle
-                const videoToLoad = preRecordedVideos[trainCount];
-
-                // 4. Mise à jour des compteurs et de l'interface
+                // 3. Incrémenter l'étape d'entraînement
                 trainCount++;
+                
+                // 4. Générer le nom du fichier vidéo correspondant à la configuration actuelle
+                const videoToLoad = getVideoFilename(trainCount);
+
+                // 5. Mise à jour de l'interface
                 updateTrainButton();
                 trainStatus.style.color = "lightgreen";
                 trainStatus.innerText = `Entraînement ${trainCount} terminé ! Voici le résultat.`;
                 
-                // 5. CHARGEMENT DE LA VIDÉO DANS LE LECTEUR HTML
+                // 6. Chargement et lecture de la vidéo
                 video.src = videoToLoad; 
-                video.load(); // Force le navigateur à charger la nouvelle source
                 
-                // On lance la vidéo automatiquement et on change le bouton pause
+                // Gestion d'erreur si la vidéo n'existe pas dans le dossier
+                video.onerror = () => {
+                    trainStatus.style.color = "#fc3535";
+                    trainStatus.innerText = `Fichier introuvable : ${videoToLoad}`;
+                };
+
+                video.load();
                 video.play();
                 playPauseBtn.innerText = '⏸ PAUSE';
 
-            }, 2500); // Temps simulé : 2500 ms = 2.5 secondes
+            }, 2500); 
         }
-    });
     });
 
     // Initialisation

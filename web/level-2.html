@@ -15,7 +15,7 @@
     <canvas id="canvas-bg"></canvas>
 
     <header id="main-nav" class="top-header scrolled">
-        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
+        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">A.R.M.<span class="project-title">Projet SMART 2026</span></a></div>
         <div class="nav-corner">
             <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">
                 <img src="img/couleur.png" class="info-icon" id="theme-icon">
@@ -42,10 +42,10 @@
 
                         <button id="play-pause-btn" class="control-btn">▶️ LECTURE</button>
                         
-                        <div class="training-group">
+                        <!-- <div class="training-group">
                             <span id="train-status" class="status-msg">En attente de paramètres...</span>
                             <button id="train-btn" class="btn-start small-train-btn">LANCER L'ENTRAÎNEMENT (0/3)</button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
             <div class="dashboard-right">
                 <div class="settings-header">
                     <h2>Niveau 2</h2>
-                    <p class="level-description">Ajustez les paramètres et observez l'impact sur R.E.X.</p>
+                    <p class="level-description">Observez notre transporteur efficace !</p>
                 </div>
 
                 <div class="settings-panel">
@@ -68,15 +68,16 @@
                         </label>
                         <div class="toggle-container">
                             <input type="radio" id="algo-ppo" name="algo" value="PPO" checked>
-                            <label for="algo-ppo" class="toggle-label">PPO</label>
+                            <label for="algo-ppo" class="toggle-label">PPO <br> <a href="https://fr.wikipedia.org/wiki/Optimisation_de_politique_proximale" target="_blank" class="wiki">En savoir plus</a> </label>
+                            
                             <input type="radio" id="algo-sac" name="algo" value="SAC">
-                            <label for="algo-sac" class="toggle-label">SAC</label>
+                            <label for="algo-sac" class="toggle-label">SAC  <br> <a href="https://fr.wikipedia.org/wiki/Algorithme_acteur-critique" target="_blank" class="wiki">En savoir plus</a></label>
                         </div>
                     </div>
 
-                    <div class="setting-group">
+                    <!-- <div class="setting-group">
                         <label for="energy-penalty">
-                            Pénalité d'énergie : <span id="energy-val" class="val-badge">Moyen</span>
+                            Pénalité d'énergie :
                             <div class="info-tooltip">
                                 <img src="img/bouton-dinformation.png"  class="info-icon">
                                 <span class="tooltip-text">Définit si l'IA est punie lorsqu'elle fait de grands mouvements qui consomment beaucoup d'énergie.</span>
@@ -88,7 +89,7 @@
 
                     <div class="setting-group">
                         <label for="shake-penalty">
-                            Pénalité de tremblement : <span id="shake-val" class="val-badge">Moyen</span>
+                            Pénalité de tremblement :
                             <div class="info-tooltip">
                                 <img src="img/bouton-dinformation.png"  class="info-icon">
                                 <span class="tooltip-text">Empêche le robot d'avoir des mouvements saccadés en le forçant à être fluide.</span>
@@ -96,100 +97,16 @@
                         </label>
                         <input type="range" id="shake-penalty" class="dashboard-slider" min="1" max="3" step="1" value="2">
                         <div class="slider-labels"><span>Faible</span><span>Moyen</span><span>Forte</span></div>
-                    </div>
-                </div>
-            </div>
+                    </div> -->
 
-        </div>
-    </div>
-
-    <script src="scripts.js"></script>
-</body>
-</html><!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StepByStep SMART - Niveau 2</title>
-    <link rel="stylesheet" href="style.css">
-    <script>
-        if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.classList.add('light-mode');
-        }
-    </script>
-</head>
-<body class="no-scroll">
-    <canvas id="canvas-bg"></canvas>
-
-    <header id="main-nav" class="top-header scrolled">
-        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
-        <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">🌙</button>
-        <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
-    </header>
-
-    <div class="dashboard-wrapper full-page">
-        <div class="dashboard-container yt-layout">
-            
-            <!-- COLONNE GAUCHE (Vidéo) -->
-            <div class="dashboard-left">
-                <a href="map.html" class="back-link">← Retour à la carte</a>
-                
-                <div class="video-container">
-                    <video id="ai-video" loop muted>
-                        <!-- Remplace par la vidéo correspondante -->
-                        <source src="votre-video-rex-nv2.mp4" type="video/mp4">
-                        Votre navigateur ne supporte pas la balise vidéo.
-                    </video>
-                    
-                    <div class="video-controls">
-                        <button id="play-pause-btn" class="control-btn">▶ LECTURE</button>
-                        
-                        <div class="training-group">
-                            <span id="train-status" class="status-msg">Prêt pour l'entraînement.</span>
-                            <button id="train-btn" class="btn-start small-train-btn">LANCER L'ENTRAÎNEMENT (0/3)</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COLONNE DROITE (Paramètres) -->
-            <div class="dashboard-right">
-                <div class="settings-header">
-                    <h2>Niveau 2 : Loi de la Récompense</h2>
-                    <p class="level-description">Découvrez comment la définition de l'objectif modifie le comportement de R.E.X.</p>
-                </div>
-
-                <div class="settings-panel">
-                    
-                    <!-- Toggle Type d'Objectif -->
                     <div class="setting-group">
                         <label>
-                            Règle du Jeu
-                            <div class="info-tooltip">
-                                <span class="tooltip-text"><b>Hit & Run</b> : Le jeu s'arrête dès que la cible est frôlée. <b>Stabilisation</b> : L'IA gagne des points à chaque frame où elle reste sur la cible.</span>
-                            </div>
+                            Analyse de ce niveau
                         </label>
-                        <div class="toggle-container">
-                            <input type="radio" id="obj-hit" name="objectif" value="hit">
-                            <label for="obj-hit" class="toggle-label">Hit & Run (V1)</label>
-                            
-                            <input type="radio" id="obj-hold" name="objectif" value="hold" checked>
-                            <label for="obj-hold" class="toggle-label">Stabilisation (V2)</label>
+                        <div class="analysis-text">
+                            <p> Dans ce niveau, R.E.X. a appris à maîtriser le transport d'objets grâce à l'algorithmes SAC, mais il y a encore du mal lorsqu'il est entrainé avec PPO.</p>
+                            <p> On a ici plusieurs paramètres supplémentaires par rapport au niveau précédent, notamment en ce qui concerne la gestion de la pince et la tâche en plusieurs phases (attraper, puis déposer).</p>
                         </div>
-                    </div>
-
-                    <!-- Slider Inertie Physique -->
-                    <div class="setting-group">
-                        <label for="inertia-slider">
-                            Inertie Physique (Poids) : <span id="inertia-val" class="val-badge">80%</span>
-                            <div class="info-tooltip">
-                                <span class="tooltip-text">Simule le poids réel du bras. À 80%, le mouvement conserve son élan précédent, obligeant l'IA à anticiper le freinage.</span>
-                            </div>
-                        </label>
-                        <input type="range" id="inertia-slider" class="dashboard-slider" min="0" max="100" step="20" value="80">
-                        <div class="slider-labels"><span>0% (Léger)</span><span>50%</span><span>100% (Lourd)</span></div>
-                    </div>
-
                 </div>
             </div>
 
@@ -198,10 +115,33 @@
 
     <script src="scripts.js"></script>
     <script>
-        // Petit script local pour l'affichage de l'inertie
-        document.getElementById('inertia-slider').addEventListener('input', function(e) {
-            document.getElementById('inertia-val').innerText = e.target.value + '%';
+        const video = document.getElementById('ai-video');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const radioAlgos = document.querySelectorAll('input[name="algo"]');
+
+        radioAlgos.forEach(radio => {
+            radio.addEventListener('change', () => {
+                const algo = radio.value.toLowerCase(); // ppo ou sac
+                video.src = `videos/level2_${algo}.mp4`;
+                video.load();
+                video.play();
+                playPauseBtn.innerText = '⏸️ PAUSE';
+            });
         });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.innerText = '⏸️ PAUSE';
+            } else {
+                video.pause();
+                playPauseBtn.innerText = '▶️ LECTURE';
+            }
+        });
+
+        video.src = `videos/level2_ppo.mp4`;
+        video.load();
+        video.play();
     </script>
 </body>
 </html>
