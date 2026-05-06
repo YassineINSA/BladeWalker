@@ -15,9 +15,13 @@
     <canvas id="canvas-bg"></canvas>
 
     <header id="main-nav" class="top-header scrolled">
-        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">A.R.M.<span class="project-title">Projet SMART 2026</span></a></div>
-        <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">☀️</button>
-        <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
+        <div class="nav-corner">
+            <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">
+                <img src="img/couleur.png" class="info-icon" id="theme-icon">
+            </button>
+            <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+        </div>
     </header>
 
     <div class="dashboard-wrapper full-page">
@@ -57,7 +61,8 @@
                     <div class="setting-group">
                         <label>
                             Algorithme
-                            <div class="info-tooltip">ℹ️
+                            <div class="info-tooltip">
+                                <img src="img/bouton-dinformation.png"  class="info-icon">
                                 <span class="tooltip-text"><b>PPO</b> est prudent et apprend pas à pas. <b>SAC</b> est plus créatif et explore davantage.</span>
                             </div>
                         </label>
@@ -72,7 +77,8 @@
                     <div class="setting-group">
                         <label for="energy-penalty">
                             Pénalité d'énergie : <span id="energy-val" class="val-badge">Moyen</span>
-                            <div class="info-tooltip">ℹ️
+                            <div class="info-tooltip">
+                                <img src="img/bouton-dinformation.png"  class="info-icon">
                                 <span class="tooltip-text">Définit si l'IA est punie lorsqu'elle fait de grands mouvements qui consomment beaucoup d'énergie.</span>
                             </div>
                         </label>
@@ -83,7 +89,8 @@
                     <div class="setting-group">
                         <label for="shake-penalty">
                             Pénalité de tremblement : <span id="shake-val" class="val-badge">Moyen</span>
-                            <div class="info-tooltip">ℹ️
+                            <div class="info-tooltip">
+                                <img src="img/bouton-dinformation.png"  class="info-icon">
                                 <span class="tooltip-text">Empêche le robot d'avoir des mouvements saccadés en le forçant à être fluide.</span>
                             </div>
                         </label>

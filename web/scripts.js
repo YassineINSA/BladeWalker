@@ -1,27 +1,19 @@
 const themeToggleBtn = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
 
-if (themeToggleBtn) {
-
-    if (document.documentElement.classList.contains('light-mode')) {
-        themeToggleBtn.innerText = '🌙';
-    } else {
-        themeToggleBtn.innerText = '☀️';
-    }
-
+if (themeToggleBtn && themeIcon) {
     themeToggleBtn.addEventListener('click', () => {
-
         document.documentElement.classList.toggle('light-mode');
         
         if (document.documentElement.classList.contains('light-mode')) {
             localStorage.setItem('theme', 'light');
-            themeToggleBtn.innerText = '🌙';
+            themeIcon.src = 'img/noir.png'; // Passage au noir pour le fond blanc
         } else {
             localStorage.setItem('theme', 'dark');
-            themeToggleBtn.innerText = '☀️';
+            themeIcon.src = 'img/couleur.png'; // Retour à la couleur pour le fond sombre
         }
     });
 }
-
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
 let particles = [];

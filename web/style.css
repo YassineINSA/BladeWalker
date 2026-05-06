@@ -15,15 +15,40 @@ body {
     color: #ffffff;
 }
 
+/* --- Style du bouton de thème --- */
 .theme-btn {
     background: none;
     border: none;
-    font-size: 1.8rem;
     cursor: pointer;
     margin-right: 20px;
     margin-left: auto; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.3s ease;
-    filter: grayscale(100%); 
+    /* On retire le grayscale(100%) pour que l'icône couleur soit visible immédiatement */
+    filter: none; 
+}
+
+/* --- Taille et comportement de l'icône spécifique --- */
+#theme-icon {
+    width: 35px;  /* Taille augmentée */
+    height: 35px;
+    transition: all 0.3s ease;
+    /* Important : On retire le filtre d'inversion par défaut pour cette icône */
+    filter: none !important; 
+}
+
+/* Effet de survol : légère rotation et agrandissement */
+.theme-btn:hover #theme-icon {
+    transform: scale(1.1) rotate(15deg);
+    filter: drop-shadow(0 0 8px rgba(252, 53, 53, 0.5));
+}
+
+/* --- Correction pour le Mode Clair --- */
+html.light-mode #theme-icon {
+    /* On s'assure que l'image noir.png reste bien noire sur fond blanc */
+    filter: none !important; 
 }
 
 .theme-btn:hover {
@@ -380,6 +405,12 @@ body.no-scroll {
     overflow: hidden;
 }
 
+.nav-corner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 /* --- Layout Principal Full Screen --- */
 .dashboard-wrapper.full-page {
     height: 100vh;
@@ -557,6 +588,13 @@ body.no-scroll {
     font-size: 1.1rem;
 }
 
+.info-icon {
+    width: 18px;
+    height: 18px;
+    filter: invert(100%) sepia(100%) grayscale(100%) brightness(150%);
+    transition: transform 0.3s ease;
+}
+
 .info-tooltip .tooltip-text {
     visibility: hidden;
     width: 220px;
@@ -693,6 +731,10 @@ html.light-mode .info-tooltip .tooltip-text {
     background-color: rgba(255, 255, 255, 0.95);
     color: #0b0c10;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+/* Annule l'inversion de l'image du bouton thème en mode clair */
+html.light-mode #theme-icon {
+    filter: none;
 }
 
 .loader {
