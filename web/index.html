@@ -14,10 +14,14 @@
 <body>
     <canvas id="canvas-bg"></canvas>
 
-    <header id="main-nav" class="top-header">
-        <div class="nav-title">A.R.M.<span class="project-title">Projet SMART 2026</span></div>
-        <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">☀️</button>
-        <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo">
+    <header id="main-nav" class="top-header scrolled">
+        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
+        <div class="nav-corner">
+            <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">
+                <img src="img/couleur.png" class="info-icon" id="theme-icon">
+            </button>
+            <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+        </div>
     </header>
 
     <div class="main-wrapper">
