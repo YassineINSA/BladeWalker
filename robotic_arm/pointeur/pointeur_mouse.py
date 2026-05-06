@@ -30,7 +30,8 @@ except Exception as e:
 obs, info = env.reset()
 env.render()
 
-window_size = env.unwrapped.window_size
+window_width = env.unwrapped.window_width
+window_height = env.unwrapped.window_height
 scale = env.unwrapped.scale
 max_reach = sum(env.unwrapped.segment_lengths)
 
@@ -47,8 +48,8 @@ while running:
             running = False
 
     mouse_x_px, mouse_y_px = pygame.mouse.get_pos()
-    target_x = (mouse_x_px - window_size / 2) / scale
-    target_y = (window_size / 2 - mouse_y_px) / scale
+    target_x = (mouse_x_px - window_width / 2) / scale
+    target_y = (window_height / 2 - mouse_y_px) / scale
 
     distance_souris = np.sqrt(target_x**2 + target_y**2)
     if distance_souris > max_reach:

@@ -188,7 +188,7 @@
 
 # #         # Étape 3: chute
 # #         if terminated:
-# #             reward -= 100.0
+# #             reward -= 10.0
 
 # #         # Étape 4 (optionnel)
 # #         reward += 0.001

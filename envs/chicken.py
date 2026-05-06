@@ -329,7 +329,7 @@ def draw_chicken(surf, bodies):
 
 def build_chicken(b2world):
     SPAWN_Y = 5.0
-    TQ = 80.0
+    TQ = 150.0
     TW, TH = 1.5, 1.0
     NW, NH = 0.5, 1.0
     HR      = 0.5
@@ -351,19 +351,21 @@ def build_chicken(b2world):
     thighL = capsule(b2world, (0, SPAWN_Y - TH/4), FW, FH, density=2.5, group_index=-1)
     calfR  = capsule(b2world, (0, SPAWN_Y - TH/4 - 3*FH/4), CW, CH, density=3.0, friction=0.8, group_index=-1)
     calfL  = capsule(b2world, (0, SPAWN_Y - TH/4 - 3*FH/4), CW, CH, density=3.0, friction=0.8, group_index=-1)
-
+    
     def hip(th):
         return b2world.CreateJoint(revoluteJointDef(
             bodyA=torso, bodyB=th,
             localAnchorA=(0, -TH/4), localAnchorB=(0, FH/2),
-            enableLimit=True, lowerAngle=-0.8, upperAngle=1.2,
+            enableLimit=True, lowerAngle=-1.2,  # était -0.8
+            upperAngle=1.6,                      # était 1.2
             enableMotor=True, maxMotorTorque=TQ, motorSpeed=0.0))
 
     def knee(th, ca):
         return b2world.CreateJoint(revoluteJointDef(
             bodyA=th, bodyB=ca,
             localAnchorA=(0, -FH/2), localAnchorB=(0, CH/2),
-            enableLimit=True, lowerAngle=-2.0, upperAngle=0.0,
+            enableLimit=True, lowerAngle=-2.4,  # était -2.0
+            upperAngle=0.1,                      # était 0.0
             enableMotor=True, maxMotorTorque=TQ, motorSpeed=0.0))
 
     neck_j = b2world.CreateJoint(revoluteJointDef(
