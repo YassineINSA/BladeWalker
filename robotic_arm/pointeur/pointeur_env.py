@@ -7,13 +7,16 @@ import math
 class RoboticArmPointeurEnv(gym.Env):
     
     # Initialisation de l'environnement
-    def __init__(self, segment_lengths=[1.0, 1.0]):
+    def __init__(self, segment_lengths=[1.0, 1.0], energy_coef=0.05, jitter_coef=0.1,render_mode="none"):
         
         super(RoboticArmPointeurEnv, self).__init__()
 
         self.segment_lengths = np.array(segment_lengths) # Longueurs des segments du bras
         self.number_links = len(self.segment_lengths) # Nombre de segments (= nombre d'articulations)
         
+        self.energy_coef = energy_coef
+        self.jitter_coef = jitter_coef
+
         max_action = 0.3 # Limite maximale de changement d'angle par step
 
         # L'action_space c'est comme la manette de contrôle qu'on donne à l'IA
@@ -49,7 +52,7 @@ class RoboticArmPointeurEnv(gym.Env):
         self.previous_action = np.zeros(self.number_links) # Stocke l'action précédente pour calculer la pénalité de jitter
         self.difficulty = 0.1 # Difficulté initiale pour le curriculum learning
 
-        self.render_mode = "none" # Mode de rendu (affichage à l'écran)
+        self.render_mode = render_mode # Mode de rendu (affichage à l'écran)
         # Le mode par défaut de Gymnasium est "none", surtout utilisé pour l'entraînement sans affichage.
         # Ici on veut voir le bras bouger, donc on utilise "human" pour afficher une fenêtre et brider le nombre de frames par seconde.
 
@@ -310,6 +313,12 @@ class RoboticArmPointeurEnv(gym.Env):
 
         pygame.display.flip()
         self.clock.tick(30)
+
+        if self.render_mode == "rgb_array":
+            # Pygame stocke les pixels en (X, Y, RGB), Gymnasium attend (Y, X, RGB)
+            # On utilise transpose pour pivoter la matrice correctement
+            return np.transpose(pygame.surfarray.array3d(self.window), axes=(1, 0, 2))
+
 
     def close(self):
         if self.window is not None:
