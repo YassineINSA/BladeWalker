@@ -160,14 +160,14 @@ const mapLevels = [
     },
     { 
         id: 1, x: 40, y: 30,
-        title: "Niveau 1 : Tâtonnements à l'aveugle", 
+        title: "Niveau 1 : Bras Articulé Basique", 
         desc: "Observez les premiers mouvements erratiques du bras robotique. Il n'a aucune idée de ce qu'il fait, mais il explore l'espace !",
         showBtn: true 
     },
     { 
         id: 2, x: 65, y: 70,
-        title: "Niveau 2 : La loi de la Récompense", 
-        desc: "Nous avons introduit une friandise virtuelle. L'algorithme PPO commence à privilégier les mouvements qui rapportent.",
+        title: "Niveau 2 : Bras articulé de transport", 
+        desc: "Nous avons introduit une friandise virtuelle. L'algorithme PPO commence à privilégier les mouvements qui rapportent, il peut désormais récuperer un objet et le déplacer.",
         showBtn: true 
     },
     { 
