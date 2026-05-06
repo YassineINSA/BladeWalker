@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StepByStep SMART</title>
+    <title>A.R.M. SMART</title>
     <link rel="stylesheet" href="style.css">
     <script>
         if (localStorage.getItem('theme') === 'light') {
@@ -14,10 +14,14 @@
 <body>
     <canvas id="canvas-bg"></canvas>
 
-    <header id="main-nav" class="top-header">
-        <div class="nav-title">STEP BY STEP<span class="project-title">Projet SMART 2026</span></div>
-        <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">☀️</button>
-        <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo">
+    <header id="main-nav" class="top-header scrolled">
+        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
+        <div class="nav-corner">
+            <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">
+                <img src="img/couleur.png" class="info-icon" id="theme-icon">
+            </button>
+            <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+        </div>
     </header>
 
     <div class="main-wrapper">
@@ -25,7 +29,8 @@
         <section id="hero" class="hero-section">
             <div class="band text-center">
                 <div class="container">
-                    <h1>STEP BY STEP</h1>
+                    <h1>A.R.M.</h1>
+                    <h2>Apprentissage par Renforcement pour Machines</h2>
                     <h3>Projet SMART 2026</h3>
                     <p class="slogan">Comprendre le Reinforcement Learning, un mouvement à la fois.</p>
                 </div>

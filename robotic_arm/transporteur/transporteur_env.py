@@ -74,12 +74,15 @@ class RoboticArmTransporteurEnv(gym.Env):
         # Le mode par défaut de Gymnasium est "none", surtout utilisé pour l'entraînement sans affichage.
         # Ici on veut voir le bras bouger, donc on utilise "human" pour afficher une fenêtre et brider le nombre de frames par seconde.
 
-        self.window_size = 600 # Taille de la fenêtre d'affichage
+        self.window_width = 800 
+        self.window_height = 600
         self.window = None # Fenêtre Pygame (sera créée au premier appel de render)
         self.clock = None # Horloge pour limiter le nombre de frames par seconde
-        self.scale = (self.window_size / 2) / (max_reach * 1.2) # Facteur de conversion entre les coordonnées physiques (mètres) et les pixels pour l'affichage
+        self.scale = (self.window_height / 2) / (max_reach * 1.2) # Facteur de conversion entre les coordonnées physiques (mètres) et les pixels pour l'affichage
 
         self.gfx_config = {
+            'background':  {'path': '../img/background.jpg', 'scale': 1.0},
+            'drop_zone':   {'path': '../img/drop-zone.png',  'scale': 0.05},
             'section':     {'path': '../img/arm-section.png',    'scale': 0.3, 'pivot_x': 80, 'pivot_y': 250},
             'last_section':{'path': '../img/arm-section.png',    'scale': 0.3, 'pivot_x': 80, 'pivot_y': 250, 'crop_percent': 0.72},
             'claw_open':   {'path': '../img/arm-open-claw.png',  'scale': 0.2, 'pivot_x': 420, 'pivot_y': 260},
@@ -268,8 +271,116 @@ class RoboticArmTransporteurEnv(gym.Env):
             "jitter_penalty": jitter_penalty
         } 
     
+    # def draw_image_with_pivot(self, surface, image, pos_screen, pivot_image, angle_degrees):
+    #     """ Dessine une image tournée autour d'un pivot spécifique. """
+    #     image_rect = image.get_rect()
+    #     pivot_vector = pygame.math.Vector2(pivot_image) - image_rect.center
+    #     rotated_image = pygame.transform.rotate(image, angle_degrees)
+    #     rotated_pivot_vector = pivot_vector.rotate(-angle_degrees)
+    #     rotated_rect = rotated_image.get_rect(center=pos_screen - rotated_pivot_vector)
+    #     surface.blit(rotated_image, rotated_rect)
+
+    # def render(self):
+    #     if self.window is None:
+    #         pygame.init()
+    #         pygame.display.init()
+    #         self.window = pygame.display.set_mode((self.window_size, self.window_size))
+    #         pygame.display.set_caption("RL Robot Arm - Pick & Place")
+    #         self.clock = pygame.time.Clock()
+
+    #     # Chargement des images si ce n'est pas encore fait
+    #     if not self.loaded_images:
+    #         for key, config in self.gfx_config.items():
+    #             try:
+    #                 img = pygame.image.load(config['path']).convert_alpha()
+                    
+    #                 # --- NOUVEAU : Rognage (Crop) de l'image si demandé ---
+    #                 if 'crop_percent' in config:
+    #                     w, h = img.get_size()
+    #                     new_w = max(1, int(w * config['crop_percent']))
+    #                     # subsurface permet de ne garder qu'une portion de l'image (de x=0 à x=new_w)
+    #                     img = img.subsurface((0, 0, new_w, h)).copy()
+
+    #                 # Mise à l'échelle
+    #                 if config['scale'] != 1.0:
+    #                     w, h = img.get_size()
+    #                     img = pygame.transform.smoothscale(img, (int(w * config['scale']), int(h * config['scale'])))
+                    
+    #                 self.loaded_images[key] = img
+    #             except FileNotFoundError:
+    #                 print(f"Attention: {config['path']} introuvable. Remplacement par un rectangle magenta.")
+    #                 surf = pygame.Surface((100, 20), pygame.SRCALPHA)
+    #                 surf.fill((255, 0, 255))
+    #                 self.loaded_images[key] = surf
+
+    #     self.window.fill((255, 255, 255))
+
+    #     def to_pixels(x, y):
+    #         px = int(self.window_size / 2 + x * self.scale)
+    #         py = int(self.window_size / 2 - y * self.scale)
+    #         return pygame.math.Vector2(px, py)
+
+    #     # 1. Dessiner la zone de dépôt (cercle rouge creux)
+    #     drop_px = to_pixels(self.drop_zone_pos[0], self.drop_zone_pos[1])
+    #     pygame.draw.circle(self.window, (255, 0, 0), (int(drop_px.x), int(drop_px.y)), 15, width=3)
+
+    #     # 2. Dessiner l'objet (cercle bleu)
+    #     obj_px = to_pixels(self.object_pos[0], self.object_pos[1])
+    #     if self.has_object:
+    #         pygame.draw.circle(self.window, (0, 200, 255), (int(obj_px.x), int(obj_px.y)), 10) 
+    #     else:
+    #         pygame.draw.circle(self.window, (0, 100, 255), (int(obj_px.x), int(obj_px.y)), 10)
+
+    #     # Calculer les positions globales des articulations
+    #     joint_positions = [(0.0, 0.0)] 
+    #     cumulative_angle = 0.0
+        
+    #     x, y = 0.0, 0.0
+    #     for i in range(self.number_links):
+    #         cumulative_angle += self.angles[i]
+    #         x += self.segment_lengths[i] * np.cos(cumulative_angle)
+    #         y += self.segment_lengths[i] * np.sin(cumulative_angle)
+    #         joint_positions.append((x, y))
+
+    #     # 4. Dessiner les SEGMENTS du bras
+    #     cumulative_angle = 0.0
+    #     for i in range(self.number_links):
+    #         cumulative_angle += self.angles[i]
+    #         angle_deg = math.degrees(cumulative_angle)
+            
+    #         p_joint = to_pixels(*joint_positions[i])
+            
+    #         key = 'last_section' if i == self.number_links - 1 else 'section'
+    #         img_section = self.loaded_images[key]
+            
+    #         pivot_section = (self.gfx_config[key]['pivot_x'] * self.gfx_config[key]['scale'], 
+    #                          self.gfx_config[key]['pivot_y'] * self.gfx_config[key]['scale'])
+            
+    #         self.draw_image_with_pivot(self.window, img_section, p_joint, pivot_section, angle_deg)
+    #     # 5. Dessiner la PINCE (ouverte ou fermée)
+    #     # La pince est fermée si on tient l'objet OU si l'action IA précédente demandait la fermeture (>0.15)
+    #     is_claw_closed = self.has_object or self.previous_raw_action[-1] > 0.15
+    #     claw_key = 'claw_closed' if is_claw_closed else 'claw_open'
+        
+    #     claw_img = self.loaded_images[claw_key]
+    #     claw_pivot = (self.gfx_config[claw_key]['pivot_x'] * self.gfx_config[claw_key]['scale'], 
+    #                   self.gfx_config[claw_key]['pivot_y'] * self.gfx_config[claw_key]['scale'])
+        
+    #     p_end = to_pixels(*joint_positions[-1])
+    #     claw_angle_deg = math.degrees(cumulative_angle) 
+        
+    #     self.draw_image_with_pivot(self.window, claw_img, p_end, claw_pivot, claw_angle_deg)
+
+    #     pygame.display.flip()
+    #     self.clock.tick(30)
+
+    # def close(self):
+    #     if self.window is not None:
+    #         pygame.quit()
+    #         self.window = None
+    #         self.clock = None
+
     def draw_image_with_pivot(self, surface, image, pos_screen, pivot_image, angle_degrees):
-        """ Dessine une image tournée autour d'un pivot spécifique. """
         image_rect = image.get_rect()
         pivot_vector = pygame.math.Vector2(pivot_image) - image_rect.center
         rotated_image = pygame.transform.rotate(image, angle_degrees)
@@ -281,52 +392,69 @@ class RoboticArmTransporteurEnv(gym.Env):
         if self.window is None:
             pygame.init()
             pygame.display.init()
-            self.window = pygame.display.set_mode((self.window_size, self.window_size))
+            self.window = pygame.display.set_mode((self.window_width, self.window_height))
             pygame.display.set_caption("RL Robot Arm - Pick & Place")
             self.clock = pygame.time.Clock()
 
-        # Chargement des images si ce n'est pas encore fait
         if not self.loaded_images:
             for key, config in self.gfx_config.items():
                 try:
                     img = pygame.image.load(config['path']).convert_alpha()
                     
-                    # --- NOUVEAU : Rognage (Crop) de l'image si demandé ---
                     if 'crop_percent' in config:
                         w, h = img.get_size()
                         new_w = max(1, int(w * config['crop_percent']))
-                        # subsurface permet de ne garder qu'une portion de l'image (de x=0 à x=new_w)
                         img = img.subsurface((0, 0, new_w, h)).copy()
 
-                    # Mise à l'échelle
-                    if config['scale'] != 1.0:
+                    # Forcer l'arrière-plan à prendre toute la fenêtre
+                    if key == 'background':
+                        img = pygame.transform.smoothscale(img, (self.window_width, self.window_height))
+                    # Mise à l'échelle standard
+                    elif config['scale'] != 1.0:
                         w, h = img.get_size()
                         img = pygame.transform.smoothscale(img, (int(w * config['scale']), int(h * config['scale'])))
                     
                     self.loaded_images[key] = img
                 except FileNotFoundError:
-                    print(f"Attention: {config['path']} introuvable. Remplacement par un rectangle magenta.")
-                    surf = pygame.Surface((100, 20), pygame.SRCALPHA)
-                    surf.fill((255, 0, 255))
+                    print(f"Attention: {config['path']} introuvable. Création d'un fallback visuel.")
+                    
+                    # Fallbacks en cas de fichier manquant
+                    if key == 'background':
+                        surf = pygame.Surface((self.window_width, self.window_height))
+                        surf.fill((200, 220, 255))
+                    elif key == 'drop_zone':
+                        surf = pygame.Surface((30, 30), pygame.SRCALPHA)
+                        pygame.draw.circle(surf, (0, 255, 0), (15, 15), 15, width=3)
+                    else:
+                        surf = pygame.Surface((100, 20), pygame.SRCALPHA)
+                        surf.fill((255, 0, 255))
                     self.loaded_images[key] = surf
 
-        self.window.fill((255, 255, 255))
+        # Afficher le background sur toute la fenêtre
+        self.window.blit(self.loaded_images['background'], (0, 0))
 
         def to_pixels(x, y):
-            px = int(self.window_size / 2 + x * self.scale)
-            py = int(self.window_size / 2 - y * self.scale)
+            px = int(self.window_width / 2 + x * self.scale)
+            py = int(self.window_height / 2 - y * self.scale)
             return pygame.math.Vector2(px, py)
 
-        # 1. Dessiner la zone de dépôt (cercle rouge creux)
+        # 1. Dessiner la zone de dépôt (Image centrée)
         drop_px = to_pixels(self.drop_zone_pos[0], self.drop_zone_pos[1])
-        pygame.draw.circle(self.window, (255, 0, 0), (int(drop_px.x), int(drop_px.y)), 15, width=3)
+        drop_img = self.loaded_images['drop_zone']
+        drop_rect = drop_img.get_rect(center=(int(drop_px.x), int(drop_px.y)))
+        self.window.blit(drop_img, drop_rect)
 
-        # 2. Dessiner l'objet (cercle bleu)
+        # 2. Dessiner l'objet (cercle rouge avec contour noir)
         obj_px = to_pixels(self.object_pos[0], self.object_pos[1])
+        obj_center = (int(obj_px.x), int(obj_px.y))
+        
         if self.has_object:
-            pygame.draw.circle(self.window, (0, 200, 255), (int(obj_px.x), int(obj_px.y)), 10) 
+            pygame.draw.circle(self.window, (255, 100, 100), obj_center, 10) # Rouge clair quand attrapé
         else:
-            pygame.draw.circle(self.window, (0, 100, 255), (int(obj_px.x), int(obj_px.y)), 10)
+            pygame.draw.circle(self.window, (160, 0, 0), obj_center, 10) # Rouge sombre au repos
+            
+        # Dessiner le contour noir de l'objet
+        pygame.draw.circle(self.window, (0, 0, 0), obj_center, 10, width=2)
 
         # Calculer les positions globales des articulations
         joint_positions = [(0.0, 0.0)] 
@@ -354,8 +482,8 @@ class RoboticArmTransporteurEnv(gym.Env):
                              self.gfx_config[key]['pivot_y'] * self.gfx_config[key]['scale'])
             
             self.draw_image_with_pivot(self.window, img_section, p_joint, pivot_section, angle_deg)
+            
         # 5. Dessiner la PINCE (ouverte ou fermée)
-        # La pince est fermée si on tient l'objet OU si l'action IA précédente demandait la fermeture (>0.15)
         is_claw_closed = self.has_object or self.previous_raw_action[-1] > 0.15
         claw_key = 'claw_closed' if is_claw_closed else 'claw_open'
         
