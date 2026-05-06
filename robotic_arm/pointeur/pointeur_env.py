@@ -22,7 +22,7 @@ class RoboticArmPointeurEnv(gym.Env):
         self.action_space = spaces.Box( # Espace d'action : un vecteur de changements d'angles pour chaque articulation
             low=-max_action, 
             high=max_action, 
-        # Ici l'agent va choisir une valeur décimal précise entre entre -0.1 et 0.1
+        # Ici l'agent va choisir une valeur décimal précise entre -0.1 et 0.1
         # On borne car une IA non entrainée pourrais faire 500 tours en une fraction de seconde
         # Ce qui n'est pas réaliste et qui casserait la simulation physique
             shape=(self.number_links,), # Le nombre de valeurs à choisir (une pour chaque articulation)

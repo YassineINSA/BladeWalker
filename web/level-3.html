@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StepByStep SMART - Niveau 3</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+</head>
+<body class="no-scroll">
+    <canvas id="canvas-bg"></canvas>
+
+    <header id="main-nav" class="top-header scrolled">
+        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
+        <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">🌙</button>
+        <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+    </header>
+
+    <div class="dashboard-wrapper full-page">
+        <div class="dashboard-container yt-layout">
+            
+            <!-- COLONNE GAUCHE (Vidéo) -->
+            <div class="dashboard-left">
+                <a href="map.html" class="back-link">← Retour à la carte</a>
+                
+                <div class="video-container">
+                    <video id="ai-video" loop muted>
+                        <source src="votre-video-rex-nv3.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas la balise vidéo.
+                    </video>
+                    
+                    <div class="video-controls">
+                        <button id="play-pause-btn" class="control-btn">▶ LECTURE</button>
+                        
+                        <div class="training-group">
+                            <span id="train-status" class="status-msg">Configurez la tâche finale...</span>
+                            <button id="train-btn" class="btn-start small-train-btn">LANCER L'ENTRAÎNEMENT (0/3)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE (Paramètres) -->
+            <div class="dashboard-right">
+                <div class="settings-header">
+                    <h2>Niveau 3 : Maîtrise Parfaite</h2>
+                    <p class="level-description">Ajout d'une pince (Pick & Place) et gestion de la difficulté (Curriculum).</p>
+                </div>
+
+                <div class="settings-panel">
+                    
+                    <!-- Toggle Tâche -->
+                    <div class="setting-group">
+                        <label>
+                            Tâche de l'Agent
+                            <div class="info-tooltip">
+                                <span class="tooltip-text">Pointeur : 2 moteurs. Pick & Place : 3 moteurs (ajout du contrôle d'ouverture/fermeture de la pince).</span>
+                            </div>
+                        </label>
+                        <div class="toggle-container">
+                            <input type="radio" id="task-pointer" name="task" value="pointer">
+                            <label for="task-pointer" class="toggle-label">Pointeur Simple</label>
+                            
+                            <input type="radio" id="task-pick" name="task" value="pick_place" checked>
+                            <label for="task-pick" class="toggle-label">Pick & Place</label>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Curriculum -->
+                    <div class="setting-group">
+                        <label>
+                            Méthodologie (Curriculum)
+                            <div class="info-tooltip">
+                                <span class="tooltip-text">Standard : Difficulté max immédiate (risque d'échec). Curriculum : Cibles proches d'abord, puis de plus en plus loin.</span>
+                            </div>
+                        </label>
+                        <div class="toggle-container">
+                            <input type="radio" id="curr-off" name="curriculum" value="off">
+                            <label for="curr-off" class="toggle-label">Standard</label>
+                            
+                            <input type="radio" id="curr-on" name="curriculum" value="on" checked>
+                            <label for="curr-on" class="toggle-label">Apprentissage Progressif</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

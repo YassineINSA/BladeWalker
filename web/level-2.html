@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StepByStep SMART - Niveau 2</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+</head>
+<body class="no-scroll">
+    <canvas id="canvas-bg"></canvas>
+
+    <header id="main-nav" class="top-header scrolled">
+        <div class="nav-title" style="opacity: 1; transform: translateX(0);"><a class="nav-link" href="index.html">STEP BY STEP<span class="project-title">Projet SMART 2026</span></a></div>
+        <button id="theme-toggle" class="theme-btn" aria-label="Changer de thème">🌙</button>
+        <img src="img/insa_lyon.png" alt="Logo de l'école" class="school-logo" onerror="this.style.display='none'">
+    </header>
+
+    <div class="dashboard-wrapper full-page">
+        <div class="dashboard-container yt-layout">
+            
+            <!-- COLONNE GAUCHE (Vidéo) -->
+            <div class="dashboard-left">
+                <a href="map.html" class="back-link">← Retour à la carte</a>
+                
+                <div class="video-container">
+                    <video id="ai-video" loop muted>
+                        <!-- Remplace par la vidéo correspondante -->
+                        <source src="votre-video-rex-nv2.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas la balise vidéo.
+                    </video>
+                    
+                    <div class="video-controls">
+                        <button id="play-pause-btn" class="control-btn">▶ LECTURE</button>
+                        
+                        <div class="training-group">
+                            <span id="train-status" class="status-msg">Prêt pour l'entraînement.</span>
+                            <button id="train-btn" class="btn-start small-train-btn">LANCER L'ENTRAÎNEMENT (0/3)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE (Paramètres) -->
+            <div class="dashboard-right">
+                <div class="settings-header">
+                    <h2>Niveau 2 : Loi de la Récompense</h2>
+                    <p class="level-description">Découvrez comment la définition de l'objectif modifie le comportement de R.E.X.</p>
+                </div>
+
+                <div class="settings-panel">
+                    
+                    <!-- Toggle Type d'Objectif -->
+                    <div class="setting-group">
+                        <label>
+                            Règle du Jeu
+                            <div class="info-tooltip">
+                                <span class="tooltip-text"><b>Hit & Run</b> : Le jeu s'arrête dès que la cible est frôlée. <b>Stabilisation</b> : L'IA gagne des points à chaque frame où elle reste sur la cible.</span>
+                            </div>
+                        </label>
+                        <div class="toggle-container">
+                            <input type="radio" id="obj-hit" name="objectif" value="hit">
+                            <label for="obj-hit" class="toggle-label">Hit & Run (V1)</label>
+                            
+                            <input type="radio" id="obj-hold" name="objectif" value="hold" checked>
+                            <label for="obj-hold" class="toggle-label">Stabilisation (V2)</label>
+                        </div>
+                    </div>
+
+                    <!-- Slider Inertie Physique -->
+                    <div class="setting-group">
+                        <label for="inertia-slider">
+                            Inertie Physique (Poids) : <span id="inertia-val" class="val-badge">80%</span>
+                            <div class="info-tooltip">
+                                <span class="tooltip-text">Simule le poids réel du bras. À 80%, le mouvement conserve son élan précédent, obligeant l'IA à anticiper le freinage.</span>
+                            </div>
+                        </label>
+                        <input type="range" id="inertia-slider" class="dashboard-slider" min="0" max="100" step="20" value="80">
+                        <div class="slider-labels"><span>0% (Léger)</span><span>50%</span><span>100% (Lourd)</span></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        // Petit script local pour l'affichage de l'inertie
+        document.getElementById('inertia-slider').addEventListener('input', function(e) {
+            document.getElementById('inertia-val').innerText = e.target.value + '%';
+        });
+    </script>
+</body>
+</html>

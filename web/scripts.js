@@ -359,8 +359,18 @@ if (dashboardContainer) {
     }
 
     trainBtn.addEventListener('click', () => {
+        // Liste des vidéos pré-enregistrées à charger dans l'ordre
+    // Assure-toi que ces fichiers existent bien dans ton dossier "videos"
+    const preRecordedVideos = [
+        "videos/etape1_debutant.mp4",
+        "videos/etape2_intermediaire.mp4",
+        "videos/etape3_expert.mp4"
+    ];
+
+    trainBtn.addEventListener('click', () => {
         if (trainCount < MAX_TRAINS) {
-            // Animation de chargement
+            
+            // 1. Animation de chargement (Le tour de magie)
             trainBtn.disabled = true;
             let dots = 0;
             trainStatus.style.color = "#fc3535";
@@ -368,27 +378,34 @@ if (dashboardContainer) {
             
             const loadingInterval = setInterval(() => {
                 dots = (dots + 1) % 4;
-                trainStatus.innerText = "Simulation de l'algorithme" + ".".repeat(dots);
+                trainStatus.innerText = "L'IA s'entraîne dans le moteur physique" + ".".repeat(dots);
             }, 500);
 
-            // Simulation du temps d'entrainement (2 secondes)
+            // 2. On simule un temps de calcul de 2.5 secondes
             setTimeout(() => {
+                // On arrête l'animation des petits points
                 clearInterval(loadingInterval);
+
+                // 3. On sélectionne la vidéo correspondante à l'étape actuelle
+                const videoToLoad = preRecordedVideos[trainCount];
+
+                // 4. Mise à jour des compteurs et de l'interface
                 trainCount++;
                 updateTrainButton();
                 trainStatus.style.color = "lightgreen";
-                trainStatus.innerText = `Entraînement ${trainCount} terminé ! Lancez la vidéo pour voir le résultat.`;
+                trainStatus.innerText = `Entraînement ${trainCount} terminé ! Voici le résultat.`;
                 
-                // ICI : Vous pourrez changer la source de la vidéo selon trainCount et les sliders
-                // ex: if(trainCount === 1) video.src = "resultat-1.mp4";
+                // 5. CHARGEMENT DE LA VIDÉO DANS LE LECTEUR HTML
+                video.src = videoToLoad; 
+                video.load(); // Force le navigateur à charger la nouvelle source
                 
-                // On met en pause la vidéo si elle tournait pour que l'utilisateur relance
-                video.pause();
-                playPauseBtn.innerText = '▶️ LECTURE';
-                video.currentTime = 0; // Rembobine
-                
-            }, 2000);
+                // On lance la vidéo automatiquement et on change le bouton pause
+                video.play();
+                playPauseBtn.innerText = '⏸ PAUSE';
+
+            }, 2500); // Temps simulé : 2500 ms = 2.5 secondes
         }
+    });
     });
 
     // Initialisation
