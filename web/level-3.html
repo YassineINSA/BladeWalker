@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StepByStep SMART - Niveau 3</title>
+    <title>A.R.M. SMART</title>
     <link rel="stylesheet" href="style.css">
     <script>
         if (localStorage.getItem('theme') === 'light') {
@@ -52,11 +52,19 @@
             <div class="dashboard-right">
                 <div class="settings-header">
                     <h2>Niveau 3</h2>
-                    <p class="level-description">???</p>
+                    <p class="level-description">Voici Paul, notre robot bipède. Nous l'avons déguisé en poule pour un maximum de fun !</p>
                 </div>
 
                 <div class="settings-panel">
-                    
+                    <div class="setting-group">
+                        <label>
+                            Analyse de ce niveau
+                        </label>
+                        <div class="analysis-text">
+                            <p> Dans ce niveau, Paul commence à maîtriser la marche sur deux jambes, mais il a encore du mal à équilibrer son corps</p>
+                            <p> Avec une meilleure gestion de l'équilibre avec le système de pénalité/récompense, Paul deviendra plus stable lors de ses mouvements.</p>
+                        </div>
+                    </div>
                     <!-- <div class="setting-group">
                         <label>
                             Tâche de l'Agent
@@ -95,5 +103,25 @@
     </div>
 
     <script src="scripts.js"></script>
+    <script>
+        const video = document.getElementById('ai-video');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.innerText = '⏸️ PAUSE';
+            } else {
+                video.pause();
+                playPauseBtn.innerText = '▶️ LECTURE';
+            }
+        });
+
+        video.src = `videos/walker.mp4`;
+        video.load();
+        video.play().catch(error => {
+            console.warn("La vidéo ne peut pas se lancer automatiquement ou n'a pas été trouvée :", error);
+        });
+    </script>
 </body>
 </html>

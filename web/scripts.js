@@ -172,9 +172,9 @@ const mapLevels = [
     },
     { 
         id: 3, x: 90, y: 40,
-        title: "Niveau 3", 
-        desc: "???",
-        showBtn: false
+        title: "Niveau 3 : La Marche de Paul", 
+        desc: "R.E.X. est au top, mais on peut aller beaucoup plus loin !",
+        showBtn: true
     }
 ];
 
